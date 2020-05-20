@@ -9,7 +9,7 @@
 #include <cstring>
 #include <cpuid.h>
 
-
+#include <x86intrin.h>
 #include "logging/crc32ctables.h"
 
 namespace logging {
@@ -136,6 +136,16 @@ uint32_t crc32cSlicingBy8(uint32_t crc, const void* data, size_t length) {
     }
 
     return crc;
+}
+
+// Hardware-accelerated CRC-32C (using CRC32 instruction)
+uint32_t crc32cHardware8(uint32_t crc, const void* data, size_t length) {
+  const char* p_buf = (const char*) data;
+  while (length-- > 0) {
+    crc = _mm_crc32_u8(crc, *p_buf++);
+  }
+
+  return crc;
 }
 
 // Hardware-accelerated CRC-32C (using CRC32 instruction)

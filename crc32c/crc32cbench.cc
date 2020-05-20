@@ -23,8 +23,9 @@ struct CRC32CFunctionInfo {
 #define MAKE_FN_STRUCT(x) { x, # x }
 static const CRC32CFunctionInfo FNINFO[] = {
     MAKE_FN_STRUCT(crc32cSarwate),
-    MAKE_FN_STRUCT(crc32cSlicingBy4),
-    MAKE_FN_STRUCT(crc32cSlicingBy8),
+    //MAKE_FN_STRUCT(crc32cSlicingBy4),
+    //MAKE_FN_STRUCT(crc32cSlicingBy8),
+    MAKE_FN_STRUCT(crc32cHardware8),
     MAKE_FN_STRUCT(crc32cHardware32),
 #ifdef __LP64__
     MAKE_FN_STRUCT(crc32cHardware64),
@@ -112,7 +113,7 @@ int main() {
 
     printf("function\t\taligned\tbytes\tMiB/sec\n");
     for (size_t fnIndex = 0; fnIndex < NUM_VALID_FUNCTIONS; ++fnIndex) {
-        for (int aligned = 0; aligned < 2; ++aligned) {
+        for (int aligned = 1; aligned < 2; ++aligned) {
             for (size_t lengthIndex = 0; lengthIndex < sizeof(DATA_LENGTHS)/sizeof(*DATA_LENGTHS);
                     ++lengthIndex) {
                 int length = DATA_LENGTHS[lengthIndex];
